@@ -1,8 +1,8 @@
-# frozen_string_literal: true
+# lib/proxylinker.rb
 
-require_relative "proxylinker/version"
+require "proxylinker/proxy_list"
 
 module Proxylinker
-  class Error < StandardError; end
-  # Your code goes here...
+  class Error < StandardError
+  end
 end
