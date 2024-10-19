@@ -13,9 +13,9 @@ Format for proxy_list.txt:
 ```
 
 ```ruby
-require 'proxymate'
+require 'proxylinker'
 
-proxy_list = Proxymate::ProxyList.new('path/to/proxy_list.txt')
+proxy_list = Proxylinker::ProxyList.new('path/to/proxy_list.txt')
 
 proxy = proxy_list.get_random_proxy
 

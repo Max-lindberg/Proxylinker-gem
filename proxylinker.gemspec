@@ -14,6 +14,6 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 3.0.0"
 
   # Specify which files should be added to the gem when it is released.
-  spec.files = Dir.glob("lib/**/*.rb") + ["proxylinker.gemspec", "README.md"]
+  spec.files = Dir.glob("lib/**/*.rb") + ["proxylinker.gemspec", "README.md", "LICENSE.txt"]
   spec.require_paths = ["lib"]
 end
