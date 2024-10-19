@@ -23,27 +23,34 @@ module Proxylinker
       proxies
     end
 
-    # Validér en proxy ved at forsøge at oprette forbindelse til en kendt URL
-    def validate_proxy(proxy)
-      uri = URI.parse('https://google.com')
-      http = Net::HTTP.new(uri.host, uri.port, proxy.addr, proxy.port)
-      http.open_timeout = @timeout
-      http.read_timeout = @timeout
-
-      begin
-        response = http.get(uri.path)
-        return response.is_a?(Net::HTTPSuccess)
-      rescue
-        false
-      end
+    # Hent en tilfældig proxy uden at validere
+    def get_random_proxy
+      @proxies.sample
     end
 
-    # Hent en tilfældig fungerende proxy
-    def get_random_proxy
-      @proxies.shuffle.each do |proxy|
-        return proxy if validate_proxy(proxy)
+    # Metode til at udføre en HTTP-get-anmodning med eller uden proxy
+    def fetch_with_proxy(uri_str)
+      uri = URI.parse(uri_str)
+      proxy = get_random_proxy
+
+      begin
+        http = Net::HTTP.new(uri.host, uri.port, proxy.addr, proxy.port)
+        http.use_ssl = (uri.scheme == 'https')
+        http.open_timeout = @timeout
+        http.read_timeout = @timeout
+        request = Net::HTTP::Get.new(uri.request_uri)
+        response = http.request(request)
+        return response.body
+      rescue
+        # Hvis der opstår en fejl med proxyen, prøv uden proxy
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = (uri.scheme == 'https')
+        http.open_timeout = @timeout
+        http.read_timeout = @timeout
+        request = Net::HTTP::Get.new(uri.request_uri)
+        response = http.request(request)
+        return response.body
       end
-      nil
     end
   end
 end
