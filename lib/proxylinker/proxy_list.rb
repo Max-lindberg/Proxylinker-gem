@@ -35,7 +35,6 @@ module Proxylinker
 
       begin
         http = Net::HTTP.new(uri.host, uri.port, proxy.addr, proxy.port)
-        http.use_ssl = (uri.scheme == 'https')
         http.open_timeout = @timeout
         http.read_timeout = @timeout
         request = Net::HTTP::Get.new(uri.request_uri)
@@ -44,7 +43,6 @@ module Proxylinker
       rescue
         # Hvis der opstår en fejl med proxyen, prøv uden proxy
         http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = (uri.scheme == 'https')
         http.open_timeout = @timeout
         http.read_timeout = @timeout
         request = Net::HTTP::Get.new(uri.request_uri)
